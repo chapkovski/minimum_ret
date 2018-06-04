@@ -12,7 +12,8 @@
         <input type="number" id="answer" class="form-control">
         <button class="answer btn btn-success" type="button">Answer</button>
     </div>
-
+    <div>Number of answered tasks: <span class="num_answered">{{ player.num_answered }}</span></div>
+    <div>Number of correct tasks: <span class="num_correct">{{ player.num_correct }}</span></div>
 {% endblock %}
 {% block scripts %}
     <script>
@@ -22,14 +23,25 @@
             var socket = new ReconnectingWebSocket(ws_path);
             socket.onmessage = function (event) {
                 var obj = jQuery.parseJSON(event.data);
-                $('h1.question').html(obj);
+                $('h1.question').html(obj.task);
+                $('span.num_answered').html(obj.num_answered);
+                $('span.num_correct').html(obj.num_correct);
             };
             $("button.answer").on("click", function () {
                 var msg = $('input#answer').val();
                 if (socket.readyState === WebSocket.OPEN) {
                     socket.send(msg);
-                };
+                }
+                ;
                 $("input#answer").val('');
+            });
+
+            $("input#answer").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                    $("button.answer").click();
+                    return false;
+                }
             });
         });
     </script>

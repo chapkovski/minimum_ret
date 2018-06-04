@@ -7,12 +7,17 @@ from minimum.models import Player
 class TaskTracker(JsonWebsocketConsumer):
     url_pattern = (r'^/tasktracker/(?P<player>[0-9]+)$')
 
+    def prepare_task(self, player):
+        return {'task': player.last_question,
+                'num_answered': player.num_answered,
+                'num_correct': player.num_correct, }
+
     def connect(self, message, **kwargs):
         player = Player.objects.get(id=self.kwargs['player'])
         if not player.last_question:
             player.last_question = random.randint(1, 99)
             player.save()
-        response = player.last_question
+        response = self.prepare_task(player)
         self.send(response)
 
     def receive(self, text=None, bytes=None, **kwargs):
@@ -22,7 +27,7 @@ class TaskTracker(JsonWebsocketConsumer):
             player.num_correct += 1
         player.last_question = random.randint(1, 99)
         player.save()
-        response = player.last_question
+        response = self.prepare_task(player)
         self.send(response)
 
 
