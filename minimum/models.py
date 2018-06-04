@@ -23,5 +23,5 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     last_question = models.IntegerField()
-    num_answered = models.IntegerField()
-    num_correct = models.IntegerField()
+    num_answered = models.IntegerField(initial=0)
+    num_correct = models.IntegerField(initial=0)

@@ -17,8 +17,12 @@ class TaskTracker(JsonWebsocketConsumer):
 
     def receive(self, text=None, bytes=None, **kwargs):
         player = Player.objects.get(id=self.kwargs['player'])
-        print(text)
-        response = random.randint(1, 99)
+        player.num_answered += 1
+        if text == 100 - player.last_question:
+            player.num_correct += 1
+        player.last_question = random.randint(1, 99)
+        player.save()
+        response = player.last_question
         self.send(response)
 
 
