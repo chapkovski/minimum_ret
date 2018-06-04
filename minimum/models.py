@@ -6,12 +6,12 @@ from otree.api import (
 author = "Philip Chapkovski, chapkovski@gmail.com"
 
 
-
 class Constants(BaseConstants):
     name_in_url = 'minimum_ret'
     players_per_group = None
     num_rounds = 1
     ...
+
 
 class Subsession(BaseSubsession):
     ...
@@ -20,5 +20,8 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     ...
 
+
 class Player(BasePlayer):
-    ...
+    last_question = models.IntegerField()
+    num_answered = models.IntegerField()
+    num_correct = models.IntegerField()
