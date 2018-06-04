@@ -18,16 +18,16 @@
     <script>
         $(function () {
             var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-            var ws_path = ws_scheme + '://' + window.location.host + "/tasktracker/";
+            var ws_path = ws_scheme + '://' + window.location.host + "/tasktracker/{{ player.id }}";
             var socket = new ReconnectingWebSocket(ws_path);
             socket.onmessage = function (event) {
                 var obj = jQuery.parseJSON(event.data);
                 $('h1.question').html(obj);
             };
             $("button.answer").on("click", function () {
-                var msg = {'answer': $('input#answer').val()};
+                var msg = $('input#answer').val();
                 if (socket.readyState === WebSocket.OPEN) {
-                    socket.send(JSON.stringify(msg));
+                    socket.send(msg);
                 };
                 $("input#answer").val('');
             });
