@@ -17,7 +17,6 @@
 {% block scripts %}
     <script>
         $(function () {
-
             var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
             var ws_path = ws_scheme + '://' + window.location.host + "/tasktracker/";
             var socket = new ReconnectingWebSocket(ws_path);
@@ -26,13 +25,10 @@
                 $('h1.question').html(obj);
             };
             $("button.answer").on("click", function () {
-                var msg = {
-                    'answer': $('input#answer').val(),
-                };
+                var msg = {'answer': $('input#answer').val()};
                 if (socket.readyState === WebSocket.OPEN) {
                     socket.send(JSON.stringify(msg));
-                }
-                ;
+                };
                 $("input#answer").val('');
             });
         });

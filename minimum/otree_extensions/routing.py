@@ -1,11 +1,9 @@
-from channels.routing import route, route_class
-from channels.generic.websockets import WebsocketConsumer
-# from pggfg.models import Player TODO importing later
-import json
+from channels.routing import route_class
+from channels.generic.websockets import JsonWebsocketConsumer
 import random
 
 
-class TaskTracker(WebsocketConsumer):
+class TaskTracker(JsonWebsocketConsumer):
     url_pattern = (r'^/tasktracker/$')
 
     def connect(self, message, **kwargs):
@@ -15,9 +13,6 @@ class TaskTracker(WebsocketConsumer):
     def receive(self, text=None, bytes=None, **kwargs):
         response = random.randint(1, 99)
         self.send(response)
-
-    def send(self, content):
-        self.message.reply_channel.send({'text': json.dumps(content)})
 
 
 channel_routing = [
