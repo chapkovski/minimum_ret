@@ -4,7 +4,7 @@ import random
 
 
 class TaskTracker(JsonWebsocketConsumer):
-    url_pattern = (r'^/tasktracker/$')
+    url_pattern = (r'^/tasktracker$')
 
     def connect(self, message, **kwargs):
         response = random.randint(1, 99)
